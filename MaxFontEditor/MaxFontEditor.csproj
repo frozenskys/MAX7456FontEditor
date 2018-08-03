@@ -88,6 +88,7 @@
     <Compile Include="Data\Glyph.cs" />
     <Compile Include="Data\GlyphSet.cs" />
     <Compile Include="Converters\GlyphThumbnailConverter.cs" />
+    <Compile Include="Data\VersionInfo.cs" />
     <Compile Include="Framework\UI.cs" />
     <Compile Include="Framework\Dynamic.cs" />
     <Compile Include="Framework\FrameworkExtensions.cs" />

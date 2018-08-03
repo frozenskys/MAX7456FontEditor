@@ -12,7 +12,7 @@
     ShowIconOnTitleBar="False"
     ShowTitleBar="False"
     UseLayoutRounding="True"
-    Title="Max7456 Glyph Editor"
+    Title="Max7456 Glyph Editor" Width="1073.018"
 >
     <Window.Resources>
         <ResourceDictionary>
@@ -95,13 +95,13 @@
         </Grid>
         
         <DockPanel LastChildFill="True" Margin="0,50,12,12" HorizontalAlignment="Stretch">
-            <DockPanel DockPanel.Dock="Right" Width="517" LastChildFill="True">
+            <DockPanel DockPanel.Dock="Right" Width="744" LastChildFill="True">
                 <TextBlock Text="Glyph Set" Style="{StaticResource MinorHeader}" DockPanel.Dock="Top" />
                 <ListBox
                     ItemsSource="{Binding CurrentGlyphSet.Glyphs}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     hlp:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedGlyphs}"
-                    SelectionMode="Extended"
+                    SelectionMode="Extended" Width="664"
                 >
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -115,9 +115,11 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Image Source="{Binding Thumbnail, Converter={conv:GlyphThumbnailConverter}}" Grid.Row="0" Width="24" Height="38" HorizontalAlignment="Center" />
                                     <TextBlock Grid.Row="1" Text="{Binding Id, StringFormat='0x\{0:x2\}'}" HorizontalAlignment="Center" />
+                                    <TextBlock Grid.Row="2" Text="{Binding Id, StringFormat='\{0:000\}'}" HorizontalAlignment="Center" />
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -161,6 +163,22 @@
                     <Button x:Name="ExportGlyphData" Content="EXPORT IMAGE" Margin="12,6,12,3" />
                     <TextBlock Text="Export Scale" Margin="12,6,12,3" />
                     <TextBox x:Name="ExportScale" Margin="12,3,12,3" />
+                    <GroupBox Header="Betaflight Font Info" Height="203" Width="162">
+                        <ListBox ItemsSource="{Binding CurrentGlyphSet.VersionInfo.Info}" Margin="0,20,0,3" >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type data:InfoPair}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="30" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}" HorizontalAlignment="Left" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Value}" HorizontalAlignment="Left" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </GroupBox>
                 </StackPanel>
                 <lc:EditorGrid GlyphsSource="{Binding SelectedGlyphs}" Brush="{Binding SelectedBrush}" Margin="12,0,12,0" />
                 <!-- <lc:GlyphEditor 

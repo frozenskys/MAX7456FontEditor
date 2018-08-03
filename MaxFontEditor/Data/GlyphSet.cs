@@ -13,6 +13,7 @@ namespace MaxFontEditor.Data
         public GlyphSet()
         {
             glyphs = new ObservableCollection<Glyph>();
+            versionInfo = new VersionInfo();
         }
 
         public static GlyphSet CreateEmpty()
@@ -97,13 +98,35 @@ namespace MaxFontEditor.Data
 
                     set.Glyphs.Add(new Glyph(g, gdata));
                 }
-
                 sr.Close();
 
+                set.versionInfo = SetVersionInfo(set.Glyphs[255]);
                 return set;
             }
         }
 
+        private static VersionInfo SetVersionInfo(Glyph glyph)
+        {
+            VersionInfo version = new VersionInfo();
+            version.Info.Add(new InfoPair { Name = "Major Version", Value = GetGlyphByte(glyph, 1) });
+            version.Info.Add(new InfoPair { Name = "Minor Version", Value = GetGlyphByte(glyph, 2) });
+            version.Info.Add(new InfoPair { Name = "Patch Version", Value = GetGlyphByte(glyph, 3) });
+            version.Info.Add(new InfoPair { Name = "ASCII Offset", Value = GetGlyphByte(glyph, 4) });
+            version.Info.Add(new InfoPair { Name = "Symbol Offset", Value = GetGlyphByte(glyph, 5) });
+            version.Info.Add(new InfoPair { Name = "Pilot Logo Offset", Value = GetGlyphByte(glyph, 6) });
+            version.Info.Add(new InfoPair { Name = "Boot Logo Offset", Value = GetGlyphByte(glyph, 7) });
+            return version;
+        }
+
+        private static string GetGlyphByte(Glyph glyph, int i)
+        {
+            var c = 0;
+            c |= (byte)(glyph.GlyphData[(i * 4)] << 6);
+            c |= (byte)(glyph.GlyphData[(i * 4) + 1] << 4);
+            c |= (byte)(glyph.GlyphData[(i * 4) + 2] << 2);
+            c |= (byte)(glyph.GlyphData[(i * 4) + 3]);
+            return String.Format("0x{0:x2}", c);
+        }
         public void SaveHFile(string filePath)
         {
             using (StreamWriter sw = new StreamWriter(filePath))
@@ -180,6 +203,7 @@ namespace MaxFontEditor.Data
         }
 
         ObservableCollection<Glyph> glyphs;
+        VersionInfo versionInfo;
         public ObservableCollection<Glyph> Glyphs
         {
             get { return glyphs; }
@@ -192,6 +216,11 @@ namespace MaxFontEditor.Data
 
                 NotifyOfPropertyChange(() => Glyphs);
             }
+        }
+
+        public VersionInfo VersionInfo
+        {
+            get { return versionInfo; }
         }
     }
 }
