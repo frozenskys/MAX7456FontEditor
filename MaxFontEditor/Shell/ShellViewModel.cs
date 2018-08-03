@@ -105,7 +105,7 @@ namespace MaxFontEditor.Shell
         {
             string path = dialogService.GetFileOpenPath("Import Glyph from Image", "Image Files|*.bmp;*.jpg;*.png;*.gif|Icon Files|*.ico|Meta Files|*.wmf;*.emf");
 
-            if (path == null)
+            if (string.IsNullOrWhiteSpace(path))
                 return;
 
             Glyph first = SelectedGlyphs.FirstOrDefault();
